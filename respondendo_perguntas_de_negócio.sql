@@ -1,11 +1,11 @@
 
-/* Após uma leitura de todas as tabelas do dataset, nota-se que
+/* ApÃ³s uma leitura de todas as tabelas do dataset, nota-se que
 apenas o ano de 2017 possui dados completos (com todos os meses e dias)
 sobre os pedidos feitos por e-commerce no Brasil. Por este motivo, 
-mantivemos as perguntas de negócio deste projeto filtradas para
+mantivemos as perguntas de negÃ³cio deste projeto filtradas para
 apenas este ano de 2017.*/
 
--- Respondendo à perguntas de negócio
+-- Respondendo Ã  perguntas de negÃ³cio
 USE OLIST
 
 -- 1. Qual foi o faturamento total  em 2017?
@@ -16,7 +16,7 @@ JOIN tb_olist_pedidos o
 WHERE YEAR(pedido_compra_datahora) = 2017
 
 
--- 2. Qual foi ticket médio dos pedidos 2017?
+-- 2. Qual foi ticket mÃ©dio dos pedidos 2017?
 SELECT
 (
 SELECT SUM(pagamento_valor)
@@ -31,15 +31,15 @@ FROM tb_olist_pedidos
 WHERE YEAR(pedido_compra_datahora) = 2017)
 as ticket_medio_2017
 
-/* Existem diversas formas de consultar o ticket médio, inclusive usando 
+/* Existem diversas formas de consultar o ticket mÃ©dio, inclusive usando 
 AVG e JOIN com as as colunas das tabelas "tb_olist_pagamentos" e "tb_olist_pedidos". 
-Mas, já que o ticket médio pode ser etendido como uma divisão do faturamento total 
-pelo número de pedidos, decidi usar uma divisão entre dois subselects que 
+Mas, jÃ¡ que o ticket mÃ©dio pode ser etendido como uma divisÃ£o do faturamento total 
+pelo nÃºmero de pedidos, decidi usar uma divisÃ£o entre dois subselects que 
 represetavam as respostas anteriores (faturamento_total / total_pedidos) .
 */
 
 
--- 3. Qual o faturamento e ticket médio por tipo de pagamento em 2017?
+-- 3. Qual o faturamento e ticket mÃ©dio por tipo de pagamento em 2017?
 select pagamento_tipo, AVG(pagamento_valor) as ticket_por_pgmt, 
 	SUM(pagamento_valor) as faturamento_por_pgmt
 FROM tb_olist_pagamentos p
@@ -89,18 +89,18 @@ INNER JOIN tb_olist_produtos p
 WHERE YEAR(pi.data_entrega_limite) = 2017
 GROUP BY p.produto_categoria
 ORDER BY receita_total DESC;
-/* começamos selecionando a coluna produto_categoria da tabela tb_olist_produtos 
+/* ComeÃ§amos selecionando a coluna produto_categoria da tabela tb_olist_produtos 
 e somando a coluna pagamento_valor da tabela tb_olist_pagamentos. Em seguida, 
 unimos a tabela tb_olist_pagamentos com a tabela tb_olist_pedidos_itens usando 
 a coluna pedido_id e, em seguida, unimos o resultado com a tabela tb_olist_produtos 
-usando a coluna produto_id. Em seguida, usamos a cláusula WHERE para selecionar 
-apenas os itens entregues em 2017. Então, agrupamos os resultados por categoria 
-de produto usando a cláusula GROUP BY e, finalmente, ordenamos os resultados 
-em ordem decrescente de receita usando a cláusula ORDER BY.
+usando a coluna produto_id. Em seguida, usamos a clÃ¡usula WHERE para selecionar 
+apenas os itens entregues em 2017. EntÃ£o, agrupamos os resultados por categoria 
+de produto usando a clÃ¡usula GROUP BY e, finalmente, ordenamos os resultados 
+em ordem decrescente de receita usando a clÃ¡usula ORDER BY.
 */
 
 
--- 8. Qual o faturamento por mês em 2017?
+-- 8. Qual o faturamento por mÃªs em 2017?
 SELECT MONTH(pedido_compra_datahora) AS mes,  
     SUM(pagamento_valor) AS faturamento 
 FROM tb_olist_pagamentos p 
@@ -108,13 +108,12 @@ INNER JOIN tb_olist_pedidos o
 	ON p.pedido_id = o.pedido_id 
 WHERE YEAR(pedido_compra_datahora) = 2017 
 GROUP BY MONTH(pedido_compra_datahora) 
-ORDER BY MONTH(pedido_compra_datahora)
-/* Nesse código, estamos utilizando a função MONTH() para extrair o mês 
+/* Nesse cÃ³digo, estamos utilizando a funÃ§Ã£o MONTH() para extrair o mÃªs 
 a partir da coluna pedido_compra_datahora da tabela "tb_olist_pedidos", 
-e a função YEAR() para extrair o ano. Em seguida, estamos somando os valores 
-da coluna pagamento_valor da tabela "tb_olist_pagamentos" para cada mês e 
-agrupando os resultados por mês e ano.Por fim, estamos ordenando os resultados 
-pelo ano e pelo mês para obter o faturamento total por mês em ordem cronológica.
+e a funÃ§Ã£o YEAR() para extrair o ano. Em seguida, estamos somando os valores 
+da coluna pagamento_valor da tabela "tb_olist_pagamentos" para cada mÃªs e 
+agrupando os resultados por mÃªs e ano.Por fim, estamos ordenando os resultados 
+pelo ano e pelo mÃªs para obter o faturamento total por mÃªs em ordem cronolÃ³gica.
 */
 
 
@@ -126,8 +125,7 @@ INNER JOIN tb_olist_pagamentos AS pag
 	ON ped.pedido_id = pag.pedido_id
 WHERE YEAR(ped.pedido_compra_datahora) = 2017
 GROUP BY DATEPART(quarter, ped.pedido_compra_datahora)
-ORDER BY DATEPART(quarter, ped.pedido_compra_datahora)
-/*Para obter os faturamentos de cada trimestre de 2017, podemos utilizar a função 
+/*Para obter os faturamentos de cada trimestre de 2017, podemos utilizar a funÃ§Ã£o 
 DATEPART() para extrair o trimestre de cada data de compra e, em seguida, agrupar 
 e somar o faturamento para cada trimestre
 */
