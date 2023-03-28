@@ -23,12 +23,14 @@ SELECT SUM(pagamento_valor)
 FROM tb_olist_pagamentos p
 JOIN tb_olist_pedidos o 
 	ON p.pedido_id = o.pedido_id
-WHERE YEAR(pedido_compra_datahora) = 2017)
+WHERE YEAR(pedido_compra_datahora) = 2017
+)
 /
 (
 SELECT COUNT(DISTINCT pedido_id)
 FROM tb_olist_pedidos
-WHERE YEAR(pedido_compra_datahora) = 2017)
+WHERE YEAR(pedido_compra_datahora) = 2017
+)
 as ticket_medio_2017
 
 /* Existem diversas formas de consultar o ticket médio, inclusive usando 
